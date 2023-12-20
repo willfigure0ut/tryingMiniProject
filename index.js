@@ -26,8 +26,6 @@ async function getResponse(prompt) {
   
   const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
-  
-
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();
@@ -40,7 +38,7 @@ async function getResponse(prompt) {
 
 app.get('/search', async (req, res) => {
   try {
-    let answer;
+    
     const options = {
       method: 'POST',
       url: 'https://api.cohere.ai/v1/generate',
@@ -55,14 +53,15 @@ app.get('/search', async (req, res) => {
         prompt: `${req.query.search}`
       }
     };
-    await axios.request(options)
-      .then(function (response) {
-        answer = response.data.generations[0].text;
-      });
-
-    const response = await getResponse(`can you give me only the image prompt related to question for searching on google images neither any link of the image nor anything in the response other than the prompt itself for the question ${req.query.search}`);
-    console.log(response);
-    const searchTerm = response;
+    
+  
+    const promptRequest = axios.request(options)
+      .then(response => response.data.generations[0].text);
+  
+    const searchTermRequest = getResponse(`can you give me only the image prompt related to question for searching on google images neither any link of the image nor anything in the response other than the prompt itself for the question ${req.query.search}`);
+  
+    const [answer, searchTerm] = await Promise.all([promptRequest, searchTermRequest]);
+  
     const results = await client.search(searchTerm);
     let image = results.slice(0, 1);
     const output = {
