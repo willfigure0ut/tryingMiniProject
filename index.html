@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Search</title>
+    <title>Chat Firefly</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
@@ -90,7 +90,7 @@
 
         async function handler() {
             const input = document.getElementById('input');
-            const response = await fetch(`http://localhost:3000/search?search=${input.value}`);
+            const response = await fetch(`http://localhost:3000/?search=${input.value}`);
             
             if (response.ok) {
                 const data = await response.json();

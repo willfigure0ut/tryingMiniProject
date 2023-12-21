@@ -7,6 +7,7 @@ const GoogleImages = require('google-images');
 const cors = require('cors')
 const app = express();
 app.use(cors())
+app.use(express.static('public'));
 
 
 
@@ -36,7 +37,7 @@ async function getResponse(prompt) {
 
 
 
-app.get('/search', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     
     const options = {
